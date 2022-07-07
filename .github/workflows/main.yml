@@ -1,25 +1,29 @@
-- name: Deploy Azure Resource Manager (ARM) Template
-  uses: Azure/arm-deploy@v1.0.8
-  with:
-    # Provide the scope of the deployment. Valid values are: 'resourcegroup', 'managementgroup', 'subscription'
-    scope: 'resourcegroup'
-    # Override the Subscription Id set by Azure Login.
-    subscriptionId: '81ec4907-9db6-4d56-86d4-d997209d7be6'
-    # Specify the Id for the Management Group, only required for Management Group Deployments.
-    managementGroupId: # optional
-    # Provide the target region, only required for management Group or Subscription deployments.
-    region: # optional
-    # Provide the name of a resource group, only required for resource Group deployments.
-    resourceGroupName: 'RG-Infra-UpSkilling-July2022'
-    # Specify the path or URL to the Azure Resource Manager template.
-    template: 'https://github.com/fazil-rf/Deply-ARM-Template/blob/main/azuredeploy.json'
-    # Incremental (only add resources to resource group) or Complete (remove extra resources from resource group) or Validate (only validates the template).
-    deploymentMode: 'Incremental'
-    # Specifies the name of the resource group deployment to create.
-    deploymentName: fazilCICDarm
-    # Supply deployment parameter values.
-    parameters: # optional
-    # Specify whether to fail the action if some data is written to stderr stream of az cli. Valid values are: true, false
-    failOnStdErr: # optional, default is true
-    # Specify any additional arguments for the deployment.
-    additionalArguments: # optional
+name: Deploy ARM Template
+
+on:
+  push:
+    branches:
+      - main
+env:
+  AZURE_SUBSCRIPTION_ID: 81ec4907-9db6-4d56-86d4-d997209d7be6  # set this to your Azure Subscription Id
+  AZURE_RESOURCE_GROUP: RG-Infra-UpSkilling-July2022   # set this to your target resource group
+
+jobs:
+  deploy-virtual-network-template:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@main
+
+      - name: Login to Azure
+        uses: azure/login@v1
+        #with:
+         # creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy ARM Template
+        uses: azure/arm-deploy@v1
+        with:
+          scope: resourcegroup
+          subscriptionId: ${{ env.AZURE_SUBSCRIPTION_ID }}
+          resourceGroupName: ${{ env.AZURE_RESOURCE_GROUP }}
+          template: ./azuredeploy.json
