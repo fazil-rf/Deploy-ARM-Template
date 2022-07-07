@@ -5,7 +5,7 @@ on:
     branches:
       - main
 env:
-  AZURE_SUBSCRIPTION_ID: 81ec4907-9db6-4d56-86d4-d997209d7be6  # set this to your Azure Subscription Id
+  AZURE_SUBSCRIPTION_ID: 81ec4907-9db6-4d56-86d4-d997209d7be6   # set this to your Azure Subscription Id
   AZURE_RESOURCE_GROUP: RG-Infra-UpSkilling-July2022   # set this to your target resource group
 
 jobs:
