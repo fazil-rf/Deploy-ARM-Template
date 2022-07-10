@@ -9,7 +9,7 @@ Write-Output "Done"
 
 # Select Azure subscription
 az account set `
-    --subscription $Env:AZURE_SUBSCRIPTION_NAME
+    --subscription --name $Env:AZURE_SUBSCRIPTION_NAME
 
 # Create the VM configuration object
 $ResourceGroupName = "RG-Infra-UpSkilling-July2022"
